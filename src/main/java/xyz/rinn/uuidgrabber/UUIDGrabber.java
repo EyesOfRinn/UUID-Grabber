@@ -52,7 +52,7 @@ public class UUIDGrabber implements Callable<List<UUID>> {
         return list;
     }
 
-    private UUID getUUID(String id) {
+    private UUID getUUID(final String id) {
     	final StringBuilder string = new StringBuilder();
     	string.append(id.substring(0, 8)).append('-').append(id.substring(8, 12)).append('-').append(id.substring(12, 16)).append('-').append(id.substring(16, 20)).append('-').append(id.substring(20, 32));
     	
