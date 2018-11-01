@@ -15,6 +15,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import xyz.rinn.uuidgrabber.utils.UUIDUtils;
+
 public class UUIDGrabber implements Callable<List<UUID>> {
     private final String name;
 
@@ -35,7 +37,7 @@ public class UUIDGrabber implements Callable<List<UUID>> {
         
         // Write to the connection
         final OutputStream stream = connection.getOutputStream();
-        stream.write(new String("[\"" + this.name + "\"]").getBytes());
+        stream.write(("[\"" + this.name + "\"]").getBytes());
         
         // Flush and close the output stream
         stream.flush();
@@ -47,15 +49,8 @@ public class UUIDGrabber implements Callable<List<UUID>> {
         // Loop through each profile in the array
         for (final Object profile : array) {
             // UUIDs returned do not have hyphens('-') in them, so we must add them in order to convert a String to a UUID
-            list.add(this.getUUID(((JSONObject) profile).get("id").toString()));
+            list.add(UUIDUtils.getUUID(((JSONObject) profile).get("id").toString()));
         }
         return list;
-    }
-
-    private UUID getUUID(final String id) {
-    	final StringBuilder string = new StringBuilder();
-    	string.append(id.substring(0, 8)).append('-').append(id.substring(8, 12)).append('-').append(id.substring(12, 16)).append('-').append(id.substring(16, 20)).append('-').append(id.substring(20, 32));
-    	
-        return UUID.fromString(string.toString());
     }
 }
